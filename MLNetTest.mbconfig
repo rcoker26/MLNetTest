@@ -1,14 +1,381 @@
 ﻿{
-  "Scenario": "Default",
+  "Scenario": "Regression",
+  "DataSource": {
+    "Version": 3,
+    "EscapeCharacter": "\"",
+    "ReadMultiLines": false,
+    "KeepDiacritics": false,
+    "KeepPunctuations": false,
+    "AllowQuoting": false,
+    "Type": "TabularFile",
+    "FilePath": "C:\\Projects\\MLNetTest\\data\\WalworthMLNetTraining_Revised.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "Municipality",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "PropertyType",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "LotAcres",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": true,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "AssessedLandValue",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "AssessedImprovementValue",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "TotalAssessedValue",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      },
+      {
+        "ColumnName": "SalePrice",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "Single",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 5
+      }
+    ]
+  },
   "Environment": {
     "Type": "LocalCPU",
     "Version": 1
   },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "SdcaRegression",
+        "Score": 0.97197288071867372,
+        "RuntimeInSeconds": 101.245,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e8",
+          "e0": {
+            "OutputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ],
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ],
+            "InputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Municipality",
+            "OutputColumnName": "Municipality"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres",
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue",
+              "Municipality"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e8": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "SalePrice",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.82436848082266467,
+        "RuntimeInSeconds": 0.306,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ],
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ],
+            "InputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Municipality",
+            "OutputColumnName": "Municipality"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres",
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue",
+              "Municipality"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 9,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "SalePrice",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.82436848082266467,
+        "RuntimeInSeconds": 0.335,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ],
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ],
+            "InputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Municipality",
+            "OutputColumnName": "Municipality"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres",
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue",
+              "Municipality"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 9,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "SalePrice",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.82196577816496785,
+        "RuntimeInSeconds": 0.317,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ],
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ],
+            "InputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Municipality",
+            "OutputColumnName": "Municipality"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres",
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue",
+              "Municipality"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 19,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "SalePrice",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestRegression",
+        "Score": 0.82030917548483351,
+        "RuntimeInSeconds": 0.327,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e5",
+          "e0": {
+            "OutputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ],
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres"
+            ]
+          },
+          "e1": {
+            "OutputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ],
+            "InputColumnNames": [
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue"
+            ]
+          },
+          "e2": {
+            "InputColumnName": "Municipality",
+            "OutputColumnName": "Municipality"
+          },
+          "e3": {
+            "InputColumnNames": [
+              "PropertyType",
+              "LotAcres",
+              "AssessedLandValue",
+              "AssessedImprovementValue",
+              "TotalAssessedValue",
+              "Municipality"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "NumberOfTrees": 16,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 0.9685694,
+            "LabelColumnName": "SalePrice",
+            "FeatureColumnName": "Features"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "OneHotEncoding",
+      "e1": "ReplaceMissingValues",
+      "e2": "FeaturizeText",
+      "e3": "Concatenate",
+      "e4": "FastTreeRegression",
+      "e5": "FastForestRegression",
+      "e6": "LightGbmRegression",
+      "e7": "LbfgsPoissonRegressionRegression",
+      "e8": "SdcaRegression"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * (e4 + e5 + e6 + e7 + e8)",
+    "MetricName": "RSquared",
+    "ModelFilePath": "C:\\Projects\\MLNetTest\\MLNetTest.mlnet"
+  },
   "Type": "TrainingConfig",
   "Version": 5,
   "TrainingOption": {
-    "Version": 1,
-    "Type": "DefaultTrainingOption",
-    "TrainingTime": 0
+    "Version": 2,
+    "Subsampling": false,
+    "Type": "RegressionTrainingOption",
+    "TrainingTime": 120,
+    "LabelColumn": "SalePrice",
+    "ValidationOption": {
+      "Version": 0,
+      "Type": "CrossValidationValidationOption",
+      "NumberOfFolds": 5
+    }
   }
 }
