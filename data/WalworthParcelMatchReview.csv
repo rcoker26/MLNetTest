@@ -1,0 +1,27 @@
+﻿Parcel Number,Physical Address,Municipality,Sale Price,Parcel Match Status,Candidate Parcel ID,Candidate Site Address,Candidate Municipality
+NA524000001,7164 HOSPITAL RD,"Lyons, Town of",595000.00,Unmatched,,,
+XP 00185,235 SOUTH SEVENTH STREET,"Delavan, City of",225000.00,Unmatched,,,
+XDPC000310000000,"513 LAWSON SCHOOL RD, UNIT 31","Delavan, City of",165000.00,Unmatched,,,
+EW00018,WISCONSIN ST,"Walworth, Town of",85000.00,Unmatched,,,
+SRGL 00006,220 FONTANA BLVD. UNIT #6,"Fontana-On-Geneva-Lake, Village of",1757086.00,Unmatched,,,
+ES00005,W5675 SUNSET RIDGE,"Walworth, Town of",400000.00,Ambiguous - review,/ES   00005,302 E MILWAUKEE STREET,CITY OF WHITEWATER
+ES00005,W5675 SUNSET RIDGE,"Walworth, Town of",400000.00,Ambiguous - review,ES    00005,W5675 SUNSET RIDGE STREET,TOWN OF WALWORTH
+&A50870001,W924 PRIMROSE RD,"Bloomfield, Village of",255000.00,Unmatched,,,
+&PL1973,N1191 WALWORTH ROAD,"Bloomfield, Village of",291000.00,Unmatched,,,
+XFLAD 00277,4117 LAKE AVENUE,"Delavan, City of",423274.00,Unmatched,,,
+P00117,N9163 MAPLE ST,"East Troy, Town of",255000.00,Unmatched,,,
+SABB 403,"269 Fontana Blvd, 403","Fontana-On-Geneva-Lake, Village of",115000.00,Unmatched,,,
+ES 00001,W5692 Sunset Ridge Rd,"Walworth, Town of",530000.00,Ambiguous - review,/ES   00001,328 E MILWAUKEE STREET,CITY OF WHITEWATER
+ES 00001,W5692 Sunset Ridge Rd,"Walworth, Town of",530000.00,Ambiguous - review,ES    00001,W5692 SUNSET RIDGE STREET,TOWN OF WALWORTH
+CA49700001,W8608 COUNTY HIGHWAY A,"Richmond, Town of",250000.00,Unmatched,,,
+JNG 900008,1061 LAKELAND LANE,"Geneva, Town of",587500.00,Unmatched,,,
+SRGL 00008,228 FONTANA BLVD. UNIT #8,"Fontana-On-Geneva-Lake, Village of",1496211.00,Unmatched,,,
+Z00002G,"705 S. LAKE SHORE DRIVE, UNIT 2G","Lake Geneva, City of",302000.00,Unmatched,,,
+TA524400001,1201 COUNTY ROAD H #A5,"Genoa City, Village of",108000.00,Unmatched,,,
+XML3 00008,"53 ARBOR RIDGE DRIVE, DELEVAN, WI 53115","Delavan, City of",300000.00,Unmatched,,,
+P79400003,N9240 DEER PATH RD,"East Troy, Town of",650000.00,Unmatched,,,
+&WE 00002,N1525 OVERLOOK DR,"Bloomfield, Village of",347500.00,Ambiguous - review,&WE   00002,N1525 OVERLOOK CIRCLE,VILLAGE OF BLOOMFIELD
+&WE 00002,N1525 OVERLOOK DR,"Bloomfield, Village of",347500.00,Ambiguous - review,/WE   00002,351 S WISCONSIN STREET UNIT 2,CITY OF WHITEWATER
+HA48150000,N7627 PLEASANT POINT CIRCLE,"La Grange, Town of",1999700.00,Unmatched,,,
+JON 700001,1790 COTTAGE DR UNIT 7-01,"Geneva, Town of",378000.00,Unmatched,,,
+FLAD0009,4203 BEACH STREET,"Delavan, Town of",490000.00,Unmatched,,,
