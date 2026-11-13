@@ -15,4 +15,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MLNetTest_ConsoleApp\**\*.cs" />
+    <Compile Remove="MLNetTest_WebApi\**\*.cs" />
+  </ItemGroup>
 </Project>

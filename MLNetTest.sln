@@ -1,13 +1,13 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.37906.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNetTest", "MLNetTest.csproj", "{5E31F7C1-EDEB-4F77-8A2B-BBCF39ACE347}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNetTest_WebApi", "..\MLNetTest_WebApi\MLNetTest_WebApi.csproj", "{5D17DBFB-9CC1-4E72-904B-82F24C63F80E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNetTest_WebApi", "MLNetTest_WebApi\MLNetTest_WebApi.csproj", "{5D17DBFB-9CC1-4E72-904B-82F24C63F80E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNetTest_ConsoleApp", "..\MLNetTest_ConsoleApp\MLNetTest_ConsoleApp.csproj", "{0617AF20-EA28-4744-61EB-1F13470CF43D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLNetTest_ConsoleApp", "MLNetTest_ConsoleApp\MLNetTest_ConsoleApp.csproj", "{0617AF20-EA28-4744-61EB-1F13470CF43D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
