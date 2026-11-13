@@ -84,7 +84,7 @@ The revised CSV contains 188 rows, seven columns, and no blank values in those s
 
 ## 7. Next steps
 
-1. **Save this file** as `C:\Projects\MLNetTest\MLNetHomePriceModel.md`.
+1. **Save this file** as `C:\Projects\MLNetTest\README.md`.
 2. Save both training CSVs in the project's `data` folder and keep the original unchanged.
 3. Generate the ML.NET C# consumption code and model artifact from Model Builder.
 4. Evaluate on a genuinely untouched set of later home sales, ensuring no overlap with training and no post-sale assessment information.
