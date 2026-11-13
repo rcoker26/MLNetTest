@@ -11,12 +11,113 @@ Build and evaluate a local home-sale-price prediction model using actual Walwort
 
 ## 2. Data sources and preparation
 
-1. **Real estate transfers:** Wisconsin real estate transfer records (`202611RETRReport.csv`), filtered to relevant residential sales. The intermediate file is `WalworthResidentialSales.csv`.
-2. **Parcel data:** Wisconsin Statewide Parcel Database, Version 12, Walworth County export. The county parcel geodatabase was opened in QGIS and exported as `WalworthParcels.csv`. County data access: <https://www.sco.wisc.edu/parcels/data-county/#v1200>.
-3. **Merge:** Sales were matched to parcel records to add assessment and lot acreage fields. Intermediate outputs: `WalworthSalesParcelsMerged.csv` and `WalworthParcelMatchReview.csv` for records needing review.
-4. **Limitation:** The available exports did not provide reliable bedrooms, bathrooms, year built, or finished living area for this training exercise.
+This project combines **transaction data** (what a property sold for) with **geospatial parcel/assessment data** (which parcel it is and what the land and improvements were assessed at). The GIS processing step was essential because the real estate transfer export did not provide all the property-level predictors needed for modeling.
 
-Parcel and sale identifiers should be kept as text when opening CSV files in Excel to preserve leading zeros.
+### 2.1 Wisconsin real estate transfer records
+
+The source sales export was `202611RETRReport.csv`. Residential transactions were filtered into `WalworthResidentialSales.csv`, using transaction and property-use fields to focus on relevant sales. The sales dataset supplies the regression label, `SalePrice`, and the transaction-side identifiers used to associate sales with parcels.
+
+The filtering process was intended to exclude transfers that are not comparable arm's-length residential sales. Filtering criteria and any exclusions should be checked against the original source columns before reproducing the workflow.
+
+### 2.2 Wisconsin Statewide Parcel Database (Version 12)
+
+The parcel source was the **Wisconsin Statewide Parcel Database, Version 12**, obtained through the State Cartographer's Office county download portal:
+
+<https://www.sco.wisc.edu/parcels/data-county/#v1200>
+
+The **Walworth County** dataset was downloaded as a GIS geodatabase rather than relying on a single countywide assessor spreadsheet. The geodatabase contains mapped parcel features and associated tabular attributes. A parcel feature is a geographic representation of a land parcel; its attribute table holds identifiers and property/assessment details.
+
+For this project, the useful exported fields included parcel/tax identifiers, site address, property classification, assessed land value, assessed improvement value, and parcel acreage. The available export **did not reliably provide** bedrooms, bathrooms, year built, or finished living area.
+
+### 2.3 QGIS: geodatabase inspection and export
+
+**Tool:** QGIS, a desktop geographic information system (GIS) used to inspect spatial datasets, map parcel boundaries, and work with their attribute tables.
+
+The project workflow was:
+
+1. **Acquire the county GIS dataset.** Download the Walworth County Version 12 parcel data and extract the downloaded archive as needed. Retain the source geodatabase unchanged as a reproducible input.
+2. **Load the geodatabase into QGIS.** Use QGIS's data-source/browser controls to locate the file geodatabase (`.gdb`) and add its parcel feature layer to the project. A geodatabase may contain multiple layers; select the parcel layer rather than assuming every layer is a parcel table.
+3. **Inspect the map.** Display Walworth County parcel geometry on the map canvas. This is useful for verifying that the selected layer represents the intended county and that features are present across the study area.
+4. **Inspect the attribute table.** Open the parcel layer's attribute table to identify parcel keys, site addresses, property class, assessed values, and acreage. Check field types and null/blank values before exporting.
+5. **Identify the fields needed for ML.NET.** The training model does not use parcel geometry directly; it uses selected *attributes* derived from the GIS dataset. Preserve parcel identifiers as text and assessment/acreage fields as numeric values.
+6. **Export the parcel attributes to CSV.** In QGIS, right-click the parcel layer and choose **Export → Save Features As…**. Select **Comma Separated Value (CSV)**, choose the destination, and save as `WalworthParcels.csv`. CSV is a flat tabular format; it does not preserve the interactive parcel geometry or QGIS layer styling.
+7. **Review the exported CSV.** Confirm row counts, field names, decimal values, and identifier formatting. Opening CSVs in Excel can strip leading zeros from parcel IDs; import those fields as **Text** or choose **Don't Convert** when prompted.
+
+**Local working location:** `C:\Projects\MLNetTest\data\` was used for the project's CSV inputs. QGIS project files and original geodatabase downloads can be kept separately from derived training tables.
+
+#### GIS concepts applied
+
+| GIS concept | How it was used in this project |
+|---|---|
+| **Parcel geometry** | Visual confirmation of mapped land parcels within Walworth County |
+| **Feature layer** | QGIS representation of the county parcel dataset |
+| **Attribute table** | Source of parcel IDs, property class, assessment fields, and acreage |
+| **Geodatabase (`.gdb`)** | Original spatial-data container opened in QGIS |
+| **CSV export** | Conversion of GIS attributes into a format suitable for tabular ETL and ML.NET |
+| **Parcel identifier** | Candidate key for linking transactions to parcel attributes |
+| **Site address** | Supporting reference for investigating possible parcel matches |
+| **Coordinate reference system (CRS)** | Relevant to spatial geometry; no coordinate reprojection or spatial-distance feature engineering is claimed for this model |
+
+This workflow is **GIS-assisted tabular feature engineering**, not a spatial machine-learning model. Parcel shapes were inspected in QGIS, but no geometry, coordinates, proximity-to-lake measurements, or other spatial features were included in the final training CSV.
+
+### 2.4 Joining sales records to parcel attributes
+
+The sales and parcel files represent different data sources and must be linked carefully. The processing pipeline associated residential transactions with parcel records and produced:
+
+- `WalworthSalesParcelsMerged.csv` — combined sales and parcel assessment fields.
+- `WalworthParcelMatchReview.csv` — cases needing manual review because a match was missing or ambiguous.
+
+The general ETL sequence was:
+
+1. Read the filtered sales and QGIS parcel CSVs.
+2. Normalize candidate parcel identifiers consistently while **preserving meaningful leading zeros**. Avoid numeric conversion of identifiers.
+3. Match records using the appropriate parcel/tax identifier fields; review unmatched or non-unique matches rather than assigning arbitrary parcels.
+4. Carry across relevant attributes such as `AssessedLandValue`, `AssessedImprovementValue`, and `LotAcres`.
+5. Validate resulting values and retain only usable records for the modeling experiments.
+
+**Reproducibility note:** The exact join-field mapping, normalization rules, and exception-resolution logic are not included in this README. They should be documented from the original merge script or working notes before claiming a fully reproducible automated join. A street address alone should not be treated as a guaranteed unique parcel key.
+
+### 2.5 Building the ML.NET feature table
+
+The GIS-derived assessment and acreage columns were combined with sale-side categorical attributes and the `SalePrice` target. The original model used five predictors. The revised model added `TotalAssessedValue`, calculated as:
+
+```text
+TotalAssessedValue = AssessedLandValue + AssessedImprovementValue
+```
+
+The revised dataset excludes transactions with sale prices of $1 million or more. That restriction changes the population being modeled; it does not mean the resulting model generalizes to luxury or lakefront homes.
+
+**Data lineage**
+
+```text
+Wisconsin real estate transfers ──> Residential sales filtering ─────┐
+                                                                      │
+Wisconsin V12 Walworth parcels (.gdb)                                  │
+    └─> QGIS map / attribute inspection                                │
+          └─> WalworthParcels.csv ──> Parcel ID matching / QA ─────────┤
+                                                                      v
+                                               Merged sales + parcel attributes
+                                                                      │
+                                                                      v
+                                                  ML.NET training CSVs
+                                                                      │
+                                                                      v
+                                              Model Builder regression model
+```
+
+### 2.6 GIS data-quality considerations
+
+- **Identifier integrity:** Parcel IDs are identifiers, not numbers. Preserve leading zeros and any formatting that matters to matching.
+- **One-to-many relationships:** A sale can involve multiple parcels, and parcel identifiers can change over time. Flag ambiguous joins for review.
+- **Assessment timing:** Confirm that assessment values were available *before* the transaction being predicted. Post-sale assessments may introduce information leakage.
+- **Area semantics:** GIS parcel acreage describes land area, not building living area. It must not be interpreted as square footage of the home.
+- **Missing building characteristics:** Bedroom count, bathroom count, construction year, and finished living area were not available as reliable training inputs in this export.
+- **Spatial bias:** Lakefront location, lake access, neighborhood, and other geographic effects can influence price, but were not explicitly modeled using GIS-derived spatial features.
+- **Public repository hygiene:** Review licensing, redistribution terms, and personally identifying transaction information before committing source datasets or parcel-level exports to a public GitHub repository.
+
+### 2.7 Potential future GIS enhancements
+
+A later version could add geospatial predictors by working in QGIS or a spatial database: parcel centroid coordinates, distance to Geneva Lake, lakefront adjacency, distance to amenities, or municipality/neighborhood boundaries. Such features require a documented CRS, valid geometries, appropriate distance calculations, and independent evaluation; **they were not implemented in the current model**.
 
 ## 3. Original ML.NET experiment
 
@@ -84,7 +185,7 @@ The revised CSV contains 188 rows, seven columns, and no blank values in those s
 
 ## 7. Next steps
 
-1. **Save this file** as `C:\Projects\MLNetTest\README.md`.
+1. **Save this file** as `C:\Projects\MLNetTest\README.md` so GitHub renders it on the repository homepage.
 2. Save both training CSVs in the project's `data` folder and keep the original unchanged.
 3. Generate the ML.NET C# consumption code and model artifact from Model Builder.
 4. Evaluate on a genuinely untouched set of later home sales, ensuring no overlap with training and no post-sale assessment information.
